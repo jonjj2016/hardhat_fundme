@@ -1,8 +1,24 @@
 {
   "name": "hardhat-project",
   "devDependencies": {
+    "@chainlink/contracts": "^0.5.1",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "ethers": "^5.7.2",
     "hardhat": "^2.12.2",
+    "hardhat-deploy": "^0.11.20",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13",
     "solhint": "^3.3.7"
+  },
+  "scripts": {
+    "deploy": "npx hardhat deploy",
+    "deploy_goerli": "npx hardhat deploy --network goerli",
+    "localhost": "npx hardhat run scripts/deploy.js --network localhost",
+    "local_node": "npx hardhat node",
+    "console": "npx hardhat console --network localhost",
+    "cons": "npx hardhat console --network goerli",
+    "test": "npx hardhat test"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
   }
 }

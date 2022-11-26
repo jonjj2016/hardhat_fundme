@@ -4,10 +4,8 @@ coverage
 coverage.json
 typechain
 typechain-types
-img
+
 #Hardhat files
 cache
 artifacts
 
-.solhint.json
-.solhintignore
