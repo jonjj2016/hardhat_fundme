@@ -106,5 +106,16 @@ describe('FundMe', async () => {
         assert.equal(await fundMe.addressToAmountFunded(accounts[i].address), 0)
       }
     })
+    it('Only Author can Withdraw', async () => {
+      const accounts = await ethers.getSigners()
+      for (let i = 1; i < 7; i++) {
+        const fundMeConnectedContract = await fundMe.connect(accounts[i])
+        await fundMeConnectedContract.fund({ value: sendValue })
+      }
+
+      //   Act
+      const attacker = await fundMe.connect(accounts[2])
+      await expect(attacker.withdraw()).to.be.rejectedWith('FundMe__NotOwner')
+    })
   })
 })
