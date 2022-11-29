@@ -8,6 +8,7 @@ img
 #Hardhat files
 cache
 artifacts
+Reports
 
 .solhint.json
 .solhintignore
