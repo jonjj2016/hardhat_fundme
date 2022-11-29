@@ -15,13 +15,13 @@ contract FundMe {
     // Type Declertations
     using PriceConverter for uint256;
     // State Variables
-    mapping(address => uint256) public addressToAmountFunded;
-    address[] public funders;
+    mapping(address => uint256) public s_addressToAmountFunded;
+    address[] public s_founders;
 
     // Could we make this constant?  /* hint: no! We should make it immutable! */
     address public immutable i_owner;
     uint256 public constant MINIMUM_USD = 50 * 10 ** 18;
-    AggregatorV3Interface public priceFeed;
+    AggregatorV3Interface public s_priceFeed;
     // Modifiers next
     modifier onlyOwner() {
         // require(msg.sender == owner);
@@ -31,7 +31,7 @@ contract FundMe {
 
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
-        priceFeed = AggregatorV3Interface(priceFeedAddress);
+        s_priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     // Receive and fallback functions next
@@ -47,31 +47,31 @@ contract FundMe {
     /// @dev This implements Pricefeeds as our library
     function fund() public payable {
         require(
-            msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
+            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
             "You need to spend more ETH!"
         );
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
-        addressToAmountFunded[msg.sender] += msg.value;
-        funders.push(msg.sender);
+        s_addressToAmountFunded[msg.sender] += msg.value;
+        s_founders.push(msg.sender);
     }
 
     // function getVersion() public view returns (uint256){
     //     // ETH/USD price feed address of Goerli Network.
-    //     AggregatorV3Interface priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
-    //     return priceFeed.version();
+    //     AggregatorV3Interface s_priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
+    //     return s_priceFeed.version();
     // }
 
     function withdraw() public onlyOwner {
         // console.log("Console.log From Solidity", msg.sender);
         for (
             uint256 funderIndex = 0;
-            funderIndex < funders.length;
+            funderIndex < s_founders.length;
             funderIndex++
         ) {
-            address funder = funders[funderIndex];
-            addressToAmountFunded[funder] = 0;
+            address funder = s_founders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
         }
-        funders = new address[](0);
+        s_founders = new address[](0);
         // // transfer
         // payable(msg.sender).transfer(address(this).balance);
         // // send
@@ -84,6 +84,20 @@ contract FundMe {
         require(callSuccess, "Call failed");
     }
 
+    function cheaperWithdraw() public payable onlyOwner {
+        address[] memory founders = s_founders;
+        for (
+            uint256 funderIndex = 0;
+            funderIndex < founders.length;
+            funderIndex++
+        ) {
+            address funder = founders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
+        }
+        s_founders = new address[](0);
+        (bool success, ) = i_owner.call{value: address(this).balance}("");
+        require(success);
+    }
     // Explainer from: https://solidity-by-example.org/fallback/
     // Ether is sent to contract
     //      is msg.data empty?

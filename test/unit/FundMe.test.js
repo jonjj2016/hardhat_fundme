@@ -33,12 +33,12 @@ describe('FundMe', async () => {
     })
     it('Updated the amount funded data structure', async () => {
       await fundMe.fund({ value: sendValue })
-      const res = await fundMe.addressToAmountFunded(deployer)
+      const res = await fundMe.s_addressToAmountFunded(deployer)
       assert.equal(String(res), String(sendValue))
     })
     it('Adds founders to array of Founders', async () => {
       await fundMe.fund({ value: sendValue })
-      const founder = await fundMe.funders(0)
+      const founder = await fundMe.s_founders(0)
       assert.equal(founder, deployer)
     })
   })
@@ -101,9 +101,12 @@ describe('FundMe', async () => {
         String(endingDeployerBalance.add(gasCost)),
       )
       // assert that we have reseted founders array
-      await expect(fundMe.funders(0)).to.be.reverted
+      await expect(fundMe.s_founders(0)).to.be.reverted
       for (let i; i < 7; i++) {
-        assert.equal(await fundMe.addressToAmountFunded(accounts[i].address), 0)
+        assert.equal(
+          await fundMe.s_addressToAmountFunded(accounts[i].address),
+          0,
+        )
       }
     })
     it('Only Author can Withdraw', async () => {
