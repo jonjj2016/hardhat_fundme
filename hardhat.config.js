@@ -1,6 +1,7 @@
 require('@nomicfoundation/hardhat-toolbox')
 require('hardhat-deploy')
 require('dotenv').config()
+require('solidity-coverage')
 require('hardhat-deploy-ethers')
 
 const GOERLI_IPS_URL = process.env.GOERLI_IPS_URL || 'https://eth-rinkeby'
@@ -28,7 +29,7 @@ module.exports = {
     },
   },
   gasReporter: {
-    enabled: true, //if need report switch to true
+    enabled: false, //if need report switch to true
     outputFile: 'Reports/gas-report.txt',
     noColors: true,
     currency: 'USD',
