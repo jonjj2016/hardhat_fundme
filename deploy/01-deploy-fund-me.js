@@ -1,6 +1,7 @@
 const { network } = require('hardhat')
 require('dotenv').config()
 const { networkConfig, developmentChains } = require('../helper-hardhat-config')
+const { verify } = require('../Utils/Verify')
 
 module.exports = async ({ deployments, getNamedAccounts }) => {
   const { deploy, log, get } = deployments
@@ -16,12 +17,21 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   } else {
     ethUsdPriceFeedAddress = networkConfig[chainId]['ethUsdPriceFeed']
   }
+  const args = [ethUsdPriceFeedAddress]
   log('Deploying FUND_ME Contract')
-  await deploy('FundMe', {
+  const fundMe = await deploy('FundMe', {
     from: deployer,
-    args: [ethUsdPriceFeedAddress],
+    args,
     log: true,
+    waitConfirmations: network.config.blockConfirmations || 1,
   })
+  if (
+    !developmentChains.includes(network.name) &&
+    process.env.ETHERSCAN_API_KEY
+  ) {
+    log('Verifying')
+    await verify(fundMe.address, args)
+  }
   log(
     '_________________________________DEPLOYED__________________________________________',
   )
