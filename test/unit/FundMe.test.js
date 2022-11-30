@@ -47,6 +47,20 @@ const { developmentChains } = require('../../helper-hardhat-config')
           const founder = await fundMe.getFunder(0)
           assert.equal(founder, deployer)
         })
+        it('Get Owner', async () => {
+          const owner = await fundMe.getOwner()
+          assert.equal(String(owner), String(deployer))
+        })
+        it('Test receive function', async () => {
+          const accounts = await ethers.getSigners()
+          const randomGuy = accounts[3]
+          await randomGuy.sendTransaction({
+            to: fundMe.address,
+            value: sendValue,
+          })
+
+          //   assert.equal(String(owner), String(deployer))
+        })
       })
       describe('Withdraw', async () => {
         beforeEach(async () => {
