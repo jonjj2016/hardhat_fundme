@@ -18,12 +18,13 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
     ethUsdPriceFeedAddress = networkConfig[chainId]['ethUsdPriceFeed']
   }
   const args = [ethUsdPriceFeedAddress]
+  console.log(args)
   log('Deploying FUND_ME Contract')
   const fundMe = await deploy('FundMe', {
     from: deployer,
-    args,
+    args: args,
     log: true,
-    waitConfirmations: network.config.blockConfirmations || 1,
+    waitConfirmations: network.config.blockConfirmations || 2,
   })
   if (
     !developmentChains.includes(network.name) &&

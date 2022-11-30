@@ -32,6 +32,7 @@ contract FundMe {
 
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
+        console.log(priceFeedAddress);
         s_priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
