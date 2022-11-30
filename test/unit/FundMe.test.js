@@ -20,7 +20,7 @@ describe('FundMe', async () => {
   })
   describe('Constructor', async () => {
     it('Sets the aggregator addresses correctly', async () => {
-      const res = await fundMe.s_priceFeed()
+      const res = await fundMe.getPriceFeed()
       assert.equal(res, mockV3Aggregator.address)
     })
   })
@@ -33,12 +33,12 @@ describe('FundMe', async () => {
     })
     it('Updated the amount funded data structure', async () => {
       await fundMe.fund({ value: sendValue })
-      const res = await fundMe.s_addressToAmountFunded(deployer)
+      const res = await fundMe.getAddressToAmountFunded(deployer)
       assert.equal(String(res), String(sendValue))
     })
     it('Adds founders to array of Founders', async () => {
       await fundMe.fund({ value: sendValue })
-      const founder = await fundMe.s_founders(0)
+      const founder = await fundMe.getFunder(0)
       assert.equal(founder, deployer)
     })
   })
@@ -101,10 +101,10 @@ describe('FundMe', async () => {
         String(endingDeployerBalance.add(gasCost)),
       )
       // assert that we have reseted founders array
-      await expect(fundMe.s_founders(0)).to.be.reverted
+      await expect(fundMe.getFunder(0)).to.be.reverted
       for (let i; i < 7; i++) {
         assert.equal(
-          await fundMe.s_addressToAmountFunded(accounts[i].address),
+          await fundMe.getAddressToAmountFunded(accounts[i].address),
           0,
         )
       }
@@ -172,9 +172,12 @@ describe('FundMe', async () => {
       String(endingDeployerBalance.add(gasCost)),
     )
     // assert that we have reseted founders array
-    await expect(fundMe.s_founders(0)).to.be.reverted
+    await expect(fundMe.getFunder(0)).to.be.reverted
     for (let i; i < 7; i++) {
-      assert.equal(await fundMe.s_addressToAmountFunded(accounts[i].address), 0)
+      assert.equal(
+        await fundMe.getAddressToAmountFunded(accounts[i].address),
+        0,
+      )
     }
   })
 })
