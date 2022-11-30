@@ -1,32 +1,33 @@
 {
-  "name": "hardhat-project",
-  "devDependencies": {
-    "@chainlink/contracts": "^0.5.1",
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.12.2",
-    "hardhat-deploy": "^0.11.20",
-    "hardhat-deploy-ethers": "^0.3.0-beta.13",
-    "hardhat-gas-reporter": "^1.0.9",
-    "solhint": "^3.3.7",
-    "solidity-coverage": "^0.8.2"
-  },
-  "scripts": {
-    "deploy": "npx hardhat deploy",
-    "deploy_goerli": "npx hardhat deploy --network goerli",
-    "localhost": "npx hardhat run scripts/deploy.js --network localhost",
-    "local_node": "npx hardhat node",
-    "console": "npx hardhat console --network localhost",
-    "cons": "npx hardhat console --network goerli",
-    "test": "npx hardhat test",
-    "test:staging": "npx hardhat test --network goerli",
-    "lint": "npx solhint 'contracts/*.sol'",
-    "lint:fix": "npx solhint 'contracts/*.sol' --fix",
-    "format": "npx prettier --write ."
-  },
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "prettier": "^2.8.0",
-    "prettier-plugin-solidity": "^1.0.0"
-  }
+    "name": "hardhat-project",
+    "devDependencies": {
+        "@chainlink/contracts": "^0.5.1",
+        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+        "ethers": "^5.7.2",
+        "hardhat": "^2.12.2",
+        "hardhat-deploy": "^0.11.20",
+        "hardhat-deploy-ethers": "^0.3.0-beta.13",
+        "hardhat-gas-reporter": "^1.0.9",
+        "solhint": "^3.3.7",
+        "solidity-coverage": "^0.8.2"
+    },
+    "scripts": {
+        "deploy": "npx hardhat deploy",
+        "deploy_goerli": "npx hardhat deploy --network goerli",
+        "localhost": "npx hardhat run scripts/deploy.js --network localhost",
+        "local_node": "npx hardhat node",
+        "console": "npx hardhat console --network localhost",
+        "cons": "npx hardhat console --network goerli",
+        "test": "npx hardhat test",
+        "test:staging": "npx hardhat test --network goerli",
+        "lint": "npx solhint 'contracts/*.sol'",
+        "lint:fix": "npx solhint 'contracts/*.sol' --fix",
+        "format": "npx prettier --write .",
+        "coverage": "npx hardhat coverage"
+    },
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "prettier": "^2.8.0",
+        "prettier-plugin-solidity": "^1.0.0"
+    }
 }
