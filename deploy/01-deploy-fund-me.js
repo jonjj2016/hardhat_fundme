@@ -4,6 +4,9 @@ const { networkConfig, developmentChains } = require('../helper-hardhat-config')
 const { verify } = require('../Utils/Verify')
 
 module.exports = async ({ deployments, getNamedAccounts }) => {
+  // if (network.name !== 'hardhat') {
+
+  // }
   const { deploy, log, get } = deployments
   const { deployer } = await getNamedAccounts()
   const chainId = network.config.chainId
@@ -17,14 +20,14 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   } else {
     ethUsdPriceFeedAddress = networkConfig[chainId]['ethUsdPriceFeed']
   }
+
   const args = [ethUsdPriceFeedAddress]
-  console.log(args)
   log('Deploying FUND_ME Contract')
   const fundMe = await deploy('FundMe', {
     from: deployer,
     args: args,
     log: true,
-    waitConfirmations: network.config.blockConfirmations || 2,
+    waitConfirmations: network.config.blockConfirmations || 1,
   })
   if (
     !developmentChains.includes(network.name) &&
